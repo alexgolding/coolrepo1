@@ -1,0 +1,26 @@
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+namespace Calculator
+{
+    public static class Sum
+    {
+        [FunctionName("Sum")]
+        public static async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            int num1 = Convert.ToInt32(req.Query["num1"]);
+            int num2 = Convert.ToInt32(req.Query["num2"]);
+            int result = num1 + num2;
+            //string responseMessage = $ "Hello, This HTTP triggered function executed successfully. Sum of {num1} and {num2} is {result}";
+            return new OkObjectResult(result);
+        }
+    }
+}
